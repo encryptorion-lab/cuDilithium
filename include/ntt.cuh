@@ -8,8 +8,11 @@
 extern __device__ const int32_t c_zetas[DILITHIUM_N];
 
 #define ntt_inner DILITHIUM_NAMESPACE(ntt_inner)
+
 __device__ void ntt_inner(int32_t regs[8], int32_t *s_poly);
+
 #define invntt_inner DILITHIUM_NAMESPACE(invntt_inner)
+
 __device__ void invntt_inner(int32_t regs[8], int32_t *s_poly);
 
 template<unsigned int VEC_SIZE>
@@ -56,7 +59,8 @@ __device__ __forceinline__ int32_t gpu_montgomery_multiply(int32_t x, int32_t y)
     return t;
 }
 
-__device__ __forceinline__ void ntt_radix2_inner(int32_t &reg0, int32_t &reg1, int32_t s_ntt[DILITHIUM_N + 128], const int32_t s_zetas[DILITHIUM_N]) {
+__device__ __forceinline__ void
+ntt_radix2_inner(int32_t &reg0, int32_t &reg1, int32_t s_ntt[DILITHIUM_N + 128], const int32_t s_zetas[DILITHIUM_N]) {
     size_t butt_idx;
     int32_t t;
     int32_t zeta;
@@ -158,7 +162,8 @@ __device__ __forceinline__ void ntt_radix2_inner(int32_t &reg0, int32_t &reg1, i
     reg1 = s_ntt[128 + 4 + threadIdx.x + (threadIdx.x >> 5)];
 }
 
-__device__ __forceinline__ void intt_radix2_inner(int32_t &reg0, int32_t &reg1, int32_t s_ntt[DILITHIUM_N + 128], const int32_t s_zetas[DILITHIUM_N]) {
+__device__ __forceinline__ void
+intt_radix2_inner(int32_t &reg0, int32_t &reg1, int32_t s_ntt[DILITHIUM_N + 128], const int32_t s_zetas[DILITHIUM_N]) {
 #define MONT2DIVN 41978
 #define MONT2DIVNMULZETA 3975713
     size_t w_idx;
@@ -310,7 +315,8 @@ __global__ void ntt_radix2_kernel(int32_t *g_polyvec, size_t mem_pool_pitch) {
     }
 }
 
-__device__ __forceinline__ void ntt_radix2_inner_pad1(int32_t &reg0, int32_t &reg1, int32_t s_ntt[DILITHIUM_N + 128], const int32_t s_zetas[DILITHIUM_N]) {
+__device__ __forceinline__ void ntt_radix2_inner_pad1(int32_t &reg0, int32_t &reg1, int32_t s_ntt[DILITHIUM_N + 128],
+                                                      const int32_t s_zetas[DILITHIUM_N]) {
     size_t butt_idx;
     int32_t t;
     int32_t zeta;

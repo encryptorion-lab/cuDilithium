@@ -1,9 +1,12 @@
 #include <cstdio>
 
 #include "api.cuh"
-#include "fips202.h"
-#include "keccak.cuh"
+#include "fips202/keccak.cuh"
+
+extern "C" {
 #include "randombytes.h"
+#include "fips202/fips202.h"
+}
 
 #define MLEN 32
 #define NVECTORS 10000
@@ -63,7 +66,8 @@ int main() {
                        ALIGN_TO_256_BYTES(CRYPTO_SECRETKEYBYTES) +                                  // sk
                        ALIGN_TO_256_BYTES(SEEDBYTES) +                                              // d_rho
                        ALIGN_TO_256_BYTES(SEEDBYTES + MLEN) +                                       // d_tr || d_m
-                       ALIGN_TO_256_BYTES(SEEDBYTES + CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES) +// d_key || d_mu || d_w1_packed
+                       ALIGN_TO_256_BYTES(SEEDBYTES + CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES) +
+                       // d_key || d_mu || d_w1_packed
                        ALIGN_TO_256_BYTES(CRHBYTES);                                                // d_rhoprime
 
     size_t sign_mem_size = byte_size +                                                // align to 256 bytes
@@ -95,7 +99,8 @@ int main() {
     uint8_t *d_temp_mem_pool;
     size_t d_temp_mem_pool_pitch;
     size_t byte_size_per_sign_temp = ALIGN_TO_256_BYTES(CRYPTO_BYTES) +                              // sig
-                                     ALIGN_TO_256_BYTES(CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES);// d_mu || d_w1_packed
+                                     ALIGN_TO_256_BYTES(
+                                             CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES);// d_mu || d_w1_packed
 
     size_t temp_mem_size = byte_size_per_sign_temp +                    // align to 256 bytes
                            DILITHIUM_L * DILITHIUM_N * sizeof(int32_t) +// d_y
@@ -126,9 +131,11 @@ int main() {
     uint8_t *d_verify_mem_pool;
     size_t d_verify_mem_pool_pitch;
     size_t byte_size_per_verify = ALIGN_TO_256_BYTES(CRYPTO_BYTES) +                               // sig
-                                  ALIGN_TO_256_BYTES(CRYPTO_PUBLICKEYBYTES) +                      // pk (rho || t1(packed))
+                                  ALIGN_TO_256_BYTES(CRYPTO_PUBLICKEYBYTES) +
+                                  // pk (rho || t1(packed))
                                   ALIGN_TO_256_BYTES(SEEDBYTES + MLEN) +                           // muprime || m
-                                  ALIGN_TO_256_BYTES(CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES) +// mu || w1_prime_packed
+                                  ALIGN_TO_256_BYTES(CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES) +
+                                  // mu || w1_prime_packed
                                   ALIGN_TO_256_BYTES(SEEDBYTES);                                   // c_tilde
 
     size_t mem_size_per_verify = byte_size_per_verify +                                     // align to 4 bytes

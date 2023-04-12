@@ -1,6 +1,6 @@
 #include "verify.cuh"
 
-#include "keccak.cuh"
+#include "fips202/keccak.cuh"
 #include "ntt.cuh"
 #include "params.h"
 #include "poly.cuh"

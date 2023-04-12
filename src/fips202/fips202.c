@@ -1,11 +1,13 @@
-/* Based on the public domain implementation in crypto_hash/keccakc512/simple/ from
- * http://bench.cr.yp.to/supercop.html by Ronny Van Keer and the public domain "TweetFips202"
- * implementation from https://twitter.com/tweetfips202 by Gilles Van Assche, Daniel J. Bernstein,
- * and Peter Schwabe */
+/* Based on the public domain implementation in crypto_hash/keccakc512/simple/
+ * from http://bench.cr.yp.to/supercop.html by Ronny Van Keer
+ * and the public domain "TweetFips202" implementation
+ * from https://twitter.com/tweetfips202
+ * by Gilles Van Assche, Daniel J. Bernstein, and Peter Schwabe */
 
-#include "fips202.h"
-#include <cstddef>
-#include <cstdint>
+#include <stddef.h>
+#include <stdint.h>
+
+#include "fips202/fips202.h"
 
 #define NROUNDS 24
 #define ROL(a, offset) ((a << offset) ^ (a >> (64 - offset)))

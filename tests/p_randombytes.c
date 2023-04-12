@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "fips202.h"
+#include "fips202/fips202.h"
 
 void randombytes(uint8_t *out, size_t outlen) {
     unsigned int i;

@@ -4,8 +4,11 @@
 #include <omp.h>
 #include <vector>
 
-#include "api.cuh"
+extern "C" {
 #include "randombytes.h"
+}
+
+#include "api.cuh"
 #include "util.cuh"
 
 #define MLEN 32
@@ -41,9 +44,12 @@ int bench_cudilithium(size_t batch_size, size_t exec_threshold, size_t n_streams
     size_t byte_size_per_sign = ALIGN_TO_256_BYTES(CRYPTO_BYTES) +                                           // sig
                                 ALIGN_TO_256_BYTES(CRYPTO_SECRETKEYBYTES) +                                  // sk
                                 ALIGN_TO_256_BYTES(SEEDBYTES) +                                              // d_rho
-                                ALIGN_TO_256_BYTES(SEEDBYTES + MLEN) +                                       // d_tr || d_m
-                                ALIGN_TO_256_BYTES(SEEDBYTES + CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES) +// d_key || d_mu || d_w1_packed
-                                ALIGN_TO_256_BYTES(CRHBYTES);                                                // d_rhoprime
+                                ALIGN_TO_256_BYTES(SEEDBYTES + MLEN) +
+                                // d_tr || d_m
+                                ALIGN_TO_256_BYTES(SEEDBYTES + CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES) +
+                                // d_key || d_mu || d_w1_packed
+                                ALIGN_TO_256_BYTES(
+                                        CRHBYTES);                                                // d_rhoprime
 
     size_t mem_size_per_sign = byte_size_per_sign +                                       // align to 8 bytes
                                DILITHIUM_K * DILITHIUM_L * DILITHIUM_N * sizeof(int32_t) +// mat
@@ -72,7 +78,8 @@ int bench_cudilithium(size_t batch_size, size_t exec_threshold, size_t n_streams
     uint8_t *d_temp_mem_pool;
     size_t d_temp_mem_pool_pitch;
     size_t byte_size_per_sign_temp = ALIGN_TO_256_BYTES(CRYPTO_BYTES) +                              // sig
-                                     ALIGN_TO_256_BYTES(CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES);// d_mu || d_w1_packed
+                                     ALIGN_TO_256_BYTES(
+                                             CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES);// d_mu || d_w1_packed
 
     size_t temp_mem_size = byte_size_per_sign_temp +                    // align to 256 bytes
                            DILITHIUM_L * DILITHIUM_N * sizeof(int32_t) +// d_y
@@ -88,9 +95,11 @@ int bench_cudilithium(size_t batch_size, size_t exec_threshold, size_t n_streams
     uint8_t *d_verify_mem_pool;
     size_t d_verify_mem_pool_pitch;
     size_t byte_size_per_verify = ALIGN_TO_256_BYTES(CRYPTO_BYTES) +                               // sig
-                                  ALIGN_TO_256_BYTES(CRYPTO_PUBLICKEYBYTES) +                      // pk (rho || t1(packed))
+                                  ALIGN_TO_256_BYTES(CRYPTO_PUBLICKEYBYTES) +
+                                  // pk (rho || t1(packed))
                                   ALIGN_TO_256_BYTES(SEEDBYTES + MLEN) +                           // muprime || m
-                                  ALIGN_TO_256_BYTES(CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES) +// mu || w1_prime_packed
+                                  ALIGN_TO_256_BYTES(CRHBYTES + DILITHIUM_K * POLYW1_PACKEDBYTES) +
+                                  // mu || w1_prime_packed
                                   ALIGN_TO_256_BYTES(SEEDBYTES);                                   // c_tilde
 
     size_t mem_size_per_verify = byte_size_per_verify +                                     // align to 256 bytes
@@ -165,7 +174,8 @@ int bench_cudilithium(size_t batch_size, size_t exec_threshold, size_t n_streams
             last_keypair_stream_batch_size += (i == n_streams - 1) ? (batch_size % n_streams) : 0;
             crypto_sign_keypair(h_pk + i * keypair_stream_batch_size * CRYPTO_PUBLICKEYBYTES,
                                 h_sk + i * keypair_stream_batch_size * CRYPTO_SECRETKEYBYTES,
-                                d_keypair_mem_pool + i * keypair_stream_batch_size * d_keypair_mem_pool_pitch, d_keypair_mem_pool_pitch, last_keypair_stream_batch_size, streams[i]);
+                                d_keypair_mem_pool + i * keypair_stream_batch_size * d_keypair_mem_pool_pitch,
+                                d_keypair_mem_pool_pitch, last_keypair_stream_batch_size, streams[i]);
         }
         cudaDeviceSynchronize();
         timer_keypair_stream.stop();
@@ -256,7 +266,9 @@ int main() {
     //    for (size_t i = 1; i <= 16; i += 1)
     //        v_n_streams.push_back(i);
     //    auto header_fmt = boost::format("%10s%10s%20s%10s%20s%20s%20s%20s") % "threshold" % "batch" % "function" % "trials" % "min" % "mean" % "median" % "stddev.";
-    auto header_fmt = boost::format("%10s%20s%10s%20s%20s%20s%20s") % "n_streams" % "function" % "trials" % "min" % "mean" % "median" % "stddev.";
+    auto header_fmt =
+            boost::format("%10s%20s%10s%20s%20s%20s%20s") % "n_streams" % "function" % "trials" % "min" % "mean" %
+            "median" % "stddev.";
     std::cout << header_fmt << std::endl;
     for (auto &batch_size: batch_sizes) {
         for (auto &exec_threshold: exec_thresholds) {

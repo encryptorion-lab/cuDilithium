@@ -1,6 +1,14 @@
-#include "keccak.cuh"
-#include <cstdio>
+/*
+ * Copyright (c) 2021 Tatsuki Ono
+ *
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/mit-license.php
+ *
+ * Modified by [Anonymous] in 2023.
+ */
 
+#include "fips202/keccak.cuh"
+#include <cstdio>
 
 __device__ const uint64_t keccak_f_round_constants[keccak_rounds] = {
         0x0000'0000'0000'0001ULL, 0x0000'0000'0000'8082ULL,

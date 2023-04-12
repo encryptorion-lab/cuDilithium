@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2021 Tatsuki Ono
+ *
+ * This software is released under the MIT License.
+ * https://opensource.org/licenses/mit-license.php
+ *
+ * Modified by [Anonymous] in 2023.
+ */
+
 #pragma once
 
 #include "params.h"
@@ -136,6 +145,7 @@ __device__ __forceinline__ uint64_t state_permute(uint64_t state, char4 params) 
 
     return a;
 }
+
 #include <cstdio>
 
 template<unsigned int rate, uint8_t p>
