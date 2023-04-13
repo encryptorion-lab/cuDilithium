@@ -22,7 +22,10 @@ All the prerequisites are listed below. You can certainly use hardware and softw
 
 ### Third-party libraries
 
+We use the following third-party libraries. Please install them before building the code.
+
 - OpenMP. Used for CPU multi-threading. Each CUDA stream is assigned to a CPU thread.
+- Boost. Used for pretty printing of results.
 
 ## Configuring and Building
 

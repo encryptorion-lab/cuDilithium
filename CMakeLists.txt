@@ -31,16 +31,21 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
+# include headers in this project
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 # use OpenMP for CPU multi-threading
-find_package(OpenMP)
+find_package(OpenMP REQUIRED)
 if(OPENMP_C_FOUND)
     set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -Xcompiler ${OpenMP_C_FLAGS}")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     link_libraries(${OpenMP_C_LIBRARIES})
 endif()
 
-# include headers in this project
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+# fetching boost and building is time consuming, so we ask users to install from package manager
+find_package(Boost REQUIRED)
+# boost headers is available through include_directories
+include_directories(${Boost_INCLUDE_DIRS})
 
 # add subdirectory of library source files
 add_subdirectory(src)
