@@ -1,5 +1,5 @@
 # bench source files
-set(BENCH_SRCS bench_dilithium.cu t_randombytes.c)
+set(BENCH_SRCS bench_dilithium.cu trng.c)
 
 # cuDilithium2 bench executable
 add_executable(bench_cuDilithium2 ${BENCH_SRCS})

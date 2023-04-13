@@ -1,5 +1,5 @@
 # test source files
-set(TEST_SRCS test_vectors.cu p_randombytes.c)
+set(TEST_SRCS test_vectors.cu prng.c)
 
 # Dilithium 2 test vectors
 add_executable(test_cuDilithium2 ${TEST_SRCS})

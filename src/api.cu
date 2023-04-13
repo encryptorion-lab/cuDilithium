@@ -16,7 +16,7 @@
 
 #include "api.cuh"
 
-#include "fips202/keccak.cuh"
+#include "fips202/fips202.cuh"
 #include "keypair.cuh"
 #include "params.h"
 #include "sign.cuh"

@@ -1,6 +1,6 @@
 #include <cstdint>
 
-#include "fips202/keccak.cuh"
+#include "fips202/fips202.cuh"
 #include "ntt.cuh"
 #include "params.h"
 #include "reduce.cuh"

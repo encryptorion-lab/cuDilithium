@@ -1,7 +1,7 @@
 #include <cstdio>
 
 #include "api.cuh"
-#include "fips202/keccak.cuh"
+#include "fips202/fips202.cuh"
 
 extern "C" {
 #include "randombytes.h"

@@ -7,7 +7,7 @@
  * Modified by [Anonymous] in 2023.
  */
 
-#include "fips202/keccak.cuh"
+#include "fips202/fips202.cuh"
 #include <cstdio>
 
 __device__ const uint64_t keccak_f_round_constants[keccak_rounds] = {
