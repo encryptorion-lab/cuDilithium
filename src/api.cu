@@ -58,18 +58,6 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk,
     return 0;
 }
 
-/**
- * @brief Computes signature.
- * @param [out] sig pointer to output signature (of length CRYPTO_BYTES)
- * @param sig_pitch output signature pitch
- * @param siglen pointer to output length of signature
- * @param [in] m pointer to message to be signed
- * @param m_pitch message pitch
- * @param mlen length of message
- * @param [in] sk pointer to bit-packed secret key
- * @param batch_size (optional) batch size, default is 1
- * @return 0 (success)
- */
 int crypto_sign_signature(uint8_t *sig, size_t sig_pitch, size_t *siglen,
                           const uint8_t *m, size_t m_pitch, size_t mlen,
                           const uint8_t *sk,

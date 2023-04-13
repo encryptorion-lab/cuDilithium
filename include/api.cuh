@@ -1,3 +1,19 @@
+/*
+ * Copyright 2022-2023 [Anonymous].
+ *
+ * This file is part of cuDilithium.
+ *
+ * cuDilithium is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * cuDilithium is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with cuDilithium.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+
 #pragma once
 
 #include <cstddef>
@@ -8,7 +24,6 @@
 
 #define ALIGN_TO_256_BYTES(x) ((((x) + 255) / 256) * 256)
 
-#define crypto_sign_keypair DILITHIUM_NAMESPACE(keypair)
 int crypto_sign_keypair(uint8_t *pk, uint8_t *sk,
                         uint8_t *d_keypair_mem_pool, size_t keypair_mem_pool_pitch,
                         size_t batch_size = 1, cudaStream_t stream = nullptr, size_t rand_index = 0);
@@ -33,7 +48,6 @@ struct task_lut {
     copy_lut_element *d_copy_lut;
 };
 
-#define crypto_sign_signature DILITHIUM_NAMESPACE(signature)
 int crypto_sign_signature(uint8_t *sig, size_t sig_pitch, size_t *siglen,
                           const uint8_t *m, size_t m_pitch, size_t mlen,
                           const uint8_t *sk,
@@ -41,7 +55,6 @@ int crypto_sign_signature(uint8_t *sig, size_t sig_pitch, size_t *siglen,
                           uint8_t *d_temp_mem_pool, size_t d_temp_mem_pool_pitch,
                           task_lut &lut, size_t exec_threshold, size_t batch_size = 1, cudaStream_t stream = nullptr);
 
-#define crypto_sign_verify DILITHIUM_NAMESPACE(verify)
 void crypto_sign_verify(int *ret,
                         const uint8_t *sig, size_t sig_pitch, size_t siglen,
                         const uint8_t *m, size_t m_pitch, size_t mlen,

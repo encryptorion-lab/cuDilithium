@@ -1,3 +1,7 @@
+/* Modified form https://github.com/pq-crystals/dilithium.
+ * Under Apache 2.0 License.
+ */
+
 #pragma once
 #include <cstdint>
 

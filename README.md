@@ -48,6 +48,8 @@ cmake --build build -j
 
 This project (cuDilithium) is released under GPLv3 license. See [COPYING](COPYING) for more information.
 
-The FIPS202 reference implementation and the random number generator is released under CC0 license. See [CC0 License](src/fips202/CC0_LICENSE) for more information.
+Some header files contain the modified code from [Dilithium official repository](https://github.com/pq-crystals/dilithium). These codes are released under Apache 2.0 License. See [Apache 2.0 License](./include/APACHE_LICENSE) for more information.
 
 The CUDA implementation of FIPS202 is released under MIT license. See [MIT License](src/fips202/MIT_LICENSE) for more information.
+
+The FIPS202 reference implementation and the random number generator is released under CC0 license. See [CC0 License](src/fips202/CC0_LICENSE) for more information.

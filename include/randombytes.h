@@ -1,3 +1,7 @@
+/* Use online implementation.
+ * Under CC0 License,.
+ */
+
 #pragma once
 
 #include <stddef.h>

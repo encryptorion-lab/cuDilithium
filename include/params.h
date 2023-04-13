@@ -1,6 +1,8 @@
-#pragma once
+/* Modified form https://github.com/pq-crystals/dilithium.
+ * Under Apache 2.0 License.
+ */
 
-#include "config.h"
+#pragma once
 
 #define SEEDBYTES 32
 #define CRHBYTES 64
