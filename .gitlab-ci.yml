@@ -1,0 +1,45 @@
+stages:
+  - build
+  - test
+
+build on A100:
+  stage: build
+  tags:
+    - gpu, a100
+  script:
+    - cmake -S . -B build -DCMAKE_CUDA_ARCHITECTURES=80-real
+    - cmake --build build -j
+  artifacts:
+    paths:
+      - build/
+
+build on 4090:
+  stage: build
+  tags:
+    - gpu, 4090
+  script:
+    - cmake -S . -B build -DCMAKE_CUDA_ARCHITECTURES=89-real
+    - cmake --build build -j
+  artifacts:
+    paths:
+      - build/
+
+ctest on A100:
+  stage: test
+  tags:
+    - gpu, a100
+  script:
+    - cd build/
+    - ctest -VV
+  dependencies:
+    - build on A100
+
+ctest on 4090:
+  stage: test
+  tags:
+    - gpu, 4090
+  script:
+    - cd build/
+    - ctest -VV
+  dependencies:
+    - build on 4090
