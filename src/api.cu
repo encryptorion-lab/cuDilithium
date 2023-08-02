@@ -111,6 +111,9 @@ int crypto_sign_signature(uint8_t *sig, size_t sig_pitch, size_t *siglen,
     int32_t *d_w0 = d_w1 + DILITHIUM_K * DILITHIUM_N;
     int32_t *d_cp = d_w0 + DILITHIUM_K * DILITHIUM_N;
 
+    CUDATimer timer_sign("sign");
+    timer_sign.start();
+
     cudaMemcpy2DAsync(d_m, d_sign_mem_pool_pitch, m, m_pitch, mlen, batch_size, cudaMemcpyHostToDevice, stream);
     cudaMemcpy2DAsync(d_sk, d_sign_mem_pool_pitch, sk, CRYPTO_SECRETKEYBYTES, CRYPTO_SECRETKEYBYTES, batch_size,
                       cudaMemcpyHostToDevice, stream);
@@ -122,11 +125,8 @@ int crypto_sign_signature(uint8_t *sig, size_t sig_pitch, size_t *siglen,
     cudaMemcpy2DAsync(d_key, d_sign_mem_pool_pitch, d_sk_key, d_sign_mem_pool_pitch, SEEDBYTES, batch_size,
                       cudaMemcpyDeviceToDevice, stream);
 
-    CUDATimer timer_sign("sign");
-    timer_sign.start();
-
-    CUDATimer timer_rej_loop("rej_loop");
-    timer_rej_loop.start();
+//    CUDATimer timer_rej_loop("rej_loop");
+//    timer_rej_loop.start();
 
     /* Compute CRH(tr, msg) */
     //    CUDATimer timer_shake_kernel("shake_kernel");
@@ -216,7 +216,6 @@ int crypto_sign_signature(uint8_t *sig, size_t sig_pitch, size_t *siglen,
     }
 
 rej:
-    timer_rej_loop.start();
 
     // repeatedly use sign_lut to fill exec_lut
     size_t exec_idx = 0;
@@ -243,14 +242,14 @@ rej:
         //                d_rhoprime,
         //                lut.d_exec_lut, d_sign_mem_pool_pitch, d_sign_mem_pool_pitch);
 
-        CUDATimer timer_y("compute_y");
-        timer_y.start();
+//        CUDATimer timer_y("compute_y");
+//        timer_y.start();
         compute_y_opt_kernel<<<(exec_threshold + 3) / 4, dim3(32, 4), 0, stream>>>(
                 d_y,
                 d_rhoprime,
                 lut.d_exec_lut, d_sign_mem_pool_pitch, d_sign_mem_pool_pitch, exec_threshold);
-        cudaStreamSynchronize(stream);
-        timer_y.stop();
+//        cudaStreamSynchronize(stream);
+//        timer_y.stop();
 
         //        cudaStreamSynchronize(stream);
         //        timer_y.stop();
@@ -261,24 +260,24 @@ rej:
         //                        d_y, d_mat,
         //                        d_exec_lut, d_sign_mem_pool_pitch, d_sign_mem_pool_pitch);
 
-        CUDATimer timer_w("compute_w");
-        timer_w.start();
+//        CUDATimer timer_w("compute_w");
+//        timer_w.start();
         compute_w_128t_kernel<<<exec_threshold, 128, 0, stream>>>(
                 d_w0, d_w1, d_w1_packed,
                 d_y, d_mat,
                 lut.d_exec_lut, d_sign_mem_pool_pitch, d_sign_mem_pool_pitch);
-        cudaStreamSynchronize(stream);
-        timer_w.stop();
+//        cudaStreamSynchronize(stream);
+//        timer_w.stop();
 
-        CUDATimer timer_cp("compute_cp");
-        timer_cp.start();
+//        CUDATimer timer_cp("compute_cp");
+//        timer_cp.start();
         compute_cp_kernel<<<exec_threshold, 32, 0, stream>>>(
                 d_cp, d_mu,
                 d_seed,
                 d_mu,
                 lut.d_exec_lut, d_sign_mem_pool_pitch, d_sign_mem_pool_pitch);
-        cudaStreamSynchronize(stream);
-        timer_cp.stop();
+//        cudaStreamSynchronize(stream);
+//        timer_cp.stop();
 
         //        compute_cp_opt_kernel<<<(exec_threshold + 3) / 4, dim3(32, 4), 0, stream>>>(
         //                d_cp, d_mu,
@@ -294,16 +293,16 @@ rej:
         //                d_s1, d_s2, d_t0,
         //                d_exec_lut, d_sign_mem_pool_pitch, d_sign_mem_pool_pitch);
 
-        CUDATimer timer_rej("rej");
-        timer_rej.start();
+//        CUDATimer timer_rej("rej");
+//        timer_rej.start();
         rej_loop_128t_kernel<<<exec_threshold, 128, 0, stream>>>(
                 d_y, d_z, d_w0, d_w1, d_cp,
                 d_z_packed, d_hint,
                 lut.d_done_lut,
                 d_s1, d_s2, d_t0,
                 lut.d_exec_lut, d_sign_mem_pool_pitch, d_sign_mem_pool_pitch);
-        cudaStreamSynchronize(stream);
-        timer_rej.stop();
+//        cudaStreamSynchronize(stream);
+//        timer_rej.stop();
 
         cudaMemcpyAsync(lut.h_done_lut, lut.d_done_lut, sizeof(uint8_t) * exec_threshold, cudaMemcpyDeviceToHost,
                         stream);
@@ -431,8 +430,8 @@ rej:
         }
     }
 
-    cudaStreamSynchronize(stream);
-    timer_rej_loop.stop();
+//    cudaStreamSynchronize(stream);
+//    timer_rej_loop.stop();
 
     // check if all done
     for (auto &e: lut.sign_lut) {
