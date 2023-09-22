@@ -101,7 +101,7 @@ int main() {
 
     // sign temp pool
 
-    size_t exec_threshold = 1800;
+    size_t exec_threshold = 2048;
 
     task_lut lut{};
     lut.sign_lut.resize(NVECTORS);
