@@ -277,7 +277,7 @@ int bench_cudilithium(size_t batch_size, size_t exec_threshold, size_t n_streams
 
 int main() {
     std::vector<size_t> batch_sizes = {10000};
-    std::vector<size_t> exec_thresholds = {2512};
+    std::vector<size_t> exec_thresholds = {2048};
     std::vector<size_t> v_n_streams = {10};
     //    for (size_t i = 1; i <= 16; i += 1)
     //        v_n_streams.push_back(i);

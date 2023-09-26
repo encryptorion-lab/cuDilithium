@@ -14,6 +14,19 @@
           </excludedPaths>
         </serverdata>
       </paths>
+      <paths name="A100 (2e0df8b8-cd2e-4d2f-92cf-32ceefa1f98b)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/tmp.RZh3pD7VKv" local="$PROJECT_DIR$" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-release" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-release-agx-xavier" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-release-4090" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-release-a100" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
       <paths name="AGX Xavier (6d6e7b67-65c7-4e4e-83af-201058306c37)">
         <serverdata>
           <mappings>
