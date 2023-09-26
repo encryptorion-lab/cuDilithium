@@ -111,8 +111,8 @@ int crypto_sign_signature(uint8_t *sig, size_t sig_pitch, size_t *siglen,
     int32_t *d_w0 = d_w1 + DILITHIUM_K * DILITHIUM_N;
     int32_t *d_cp = d_w0 + DILITHIUM_K * DILITHIUM_N;
 
-    CUDATimer timer_sign("sign");
-    timer_sign.start();
+//    CUDATimer timer_sign("sign");
+//    timer_sign.start();
 
     cudaMemcpy2DAsync(d_m, d_sign_mem_pool_pitch, m, m_pitch, mlen, batch_size, cudaMemcpyHostToDevice, stream);
     cudaMemcpy2DAsync(d_sk, d_sign_mem_pool_pitch, sk, CRYPTO_SECRETKEYBYTES, CRYPTO_SECRETKEYBYTES, batch_size,
@@ -445,8 +445,8 @@ rej:
 
     *siglen = CRYPTO_BYTES;
 
-    cudaStreamSynchronize(stream);
-    timer_sign.stop();
+//    cudaStreamSynchronize(stream);
+//    timer_sign.stop();
 
     return 0;
 }
