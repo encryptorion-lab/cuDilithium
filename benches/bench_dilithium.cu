@@ -129,21 +129,20 @@ int bench_cudilithium(size_t batch_size, size_t exec_threshold, size_t n_streams
 
     CHECK_CUDA_ERROR(cudaMallocPitch(&d_verify_mem_pool, &d_verify_mem_pool_pitch, mem_size_per_verify, batch_size));
 
-    //    ChronoTimer timer_verify_batch("verify batch");
-    //    ChronoTimer timer_sign_batch("sign_batch");
-    //    ChronoTimer timer_keypair_batch("keypair batch");
+    ChronoTimer timer_verify_batch("verify batch");
+    ChronoTimer timer_sign_batch("sign_batch");
+    ChronoTimer timer_keypair_batch("keypair batch");
 
     for (size_t i = 0; i < batch_size; ++i)
         randombytes(h_m + i * MLEN, MLEN);
 
-    /*
-    for (size_t test_idx = 0; test_idx < 1; test_idx++) {
-        //        timer_keypair_batch.start();
+    for (size_t test_idx = 0; test_idx < 100; test_idx++) {
+        timer_keypair_batch.start();
         crypto_sign_keypair(h_pk, h_sk, d_keypair_mem_pool, d_keypair_mem_pool_pitch, batch_size);
         cudaDeviceSynchronize();
-        //        timer_keypair_batch.stop();
+        timer_keypair_batch.stop();
 
-        //        timer_sign_batch.start();
+        timer_sign_batch.start();
         crypto_sign_signature(
                 h_sm, CRYPTO_BYTES, &smlen,
                 h_m, MLEN, MLEN,
@@ -152,7 +151,7 @@ int bench_cudilithium(size_t batch_size, size_t exec_threshold, size_t n_streams
                 d_temp_mem_pool, d_temp_mem_pool_pitch,
                 lut, exec_threshold, batch_size);
         cudaDeviceSynchronize();
-        //        timer_sign_batch.stop();
+        timer_sign_batch.stop();
 
         timer_verify_batch.start();
         crypto_sign_verify(
@@ -172,7 +171,7 @@ int bench_cudilithium(size_t batch_size, size_t exec_threshold, size_t n_streams
             }
         }
     }
-    */
+
     ChronoTimer timer_verify_stream("verify stream");
     ChronoTimer timer_sign_stream("sign stream");
     ChronoTimer timer_keypair_stream("keypair stream");

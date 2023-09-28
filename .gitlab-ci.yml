@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - bench
 
 build on A100:
   stage: build
@@ -41,5 +42,27 @@ ctest on 4090:
   script:
     - cd build/
     - ctest -VV
+  dependencies:
+    - build on 4090
+
+bench on A100:
+  stage: bench
+  tags:
+    - gpu, a100
+  script:
+    - ./build/bin/bench_cuDilithium2
+    - ./build/bin/bench_cuDilithium3
+    - ./build/bin/bench_cuDilithium5
+  dependencies:
+    - build on A100
+
+bench on 4090:
+  stage: bench
+  tags:
+    - gpu, 4090
+  script:
+    - ./build/bin/bench_cuDilithium2
+    - ./build/bin/bench_cuDilithium3
+    - ./build/bin/bench_cuDilithium5
   dependencies:
     - build on 4090
