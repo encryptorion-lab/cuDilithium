@@ -14,17 +14,6 @@ build on A100:
     paths:
       - build/
 
-build on AGX Xavier:
-  stage: build
-  tags:
-    - gpu, agx_xavier
-  script:
-    - cmake -S . -B build -DCMAKE_CUDA_ARCHITECTURES=72-real
-    - cmake --build build -j
-  artifacts:
-    paths:
-      - build/
-
 ctest on A100:
   stage: test
   tags:
@@ -35,16 +24,6 @@ ctest on A100:
   dependencies:
     - build on A100
 
-ctest on AGX Xavier:
-  stage: test
-  tags:
-    - gpu, agx_xavier
-  script:
-    - cd build/
-    - ctest -VV
-  dependencies:
-    - build on AGX Xavier
-
 bench on A100:
   stage: bench
   tags:
@@ -53,16 +32,7 @@ bench on A100:
     - ./build/bin/bench_cuDilithium2
     - ./build/bin/bench_cuDilithium3
     - ./build/bin/bench_cuDilithium5
+    - ./build/bin/bench_ntt_radix2
+    - ./build/bin/bench_ntt_radix8
   dependencies:
     - build on A100
-
-bench on AGX Xavier:
-  stage: bench
-  tags:
-    - gpu, agx_xavier
-  script:
-    - ./build/bin/bench_cuDilithium2
-    - ./build/bin/bench_cuDilithium3
-    - ./build/bin/bench_cuDilithium5
-  dependencies:
-    - build on AGX Xavier
