@@ -136,7 +136,7 @@ int bench_cudilithium(size_t batch_size, size_t exec_threshold, size_t n_streams
     for (size_t i = 0; i < batch_size; ++i)
         randombytes(h_m + i * MLEN, MLEN);
 
-    for (size_t test_idx = 0; test_idx < 100; test_idx++) {
+    for (size_t test_idx = 0; test_idx < 10; test_idx++) {
         timer_keypair_batch.start();
         crypto_sign_keypair(h_pk, h_sk, d_keypair_mem_pool, d_keypair_mem_pool_pitch, batch_size);
         cudaDeviceSynchronize();
@@ -181,7 +181,7 @@ int bench_cudilithium(size_t batch_size, size_t exec_threshold, size_t n_streams
     for (auto &stream: streams) {
         CHECK_CUDA_ERROR(cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking));
     }
-    for (size_t test_idx = 0; test_idx < 1000; test_idx++) {
+    for (size_t test_idx = 0; test_idx < 10; test_idx++) {
         timer_keypair_stream.start();
         for (size_t i = 0; i < n_streams; ++i) {
             size_t keypair_stream_batch_size = batch_size / n_streams;
