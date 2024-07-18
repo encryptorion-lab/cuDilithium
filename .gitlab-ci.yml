@@ -14,12 +14,12 @@ build on A100:
     paths:
       - build/
 
-build on 4090:
+build on AGX Xavier:
   stage: build
   tags:
-    - gpu, 4090
+    - gpu, agx_xavier
   script:
-    - cmake -S . -B build -DCMAKE_CUDA_ARCHITECTURES=89-real
+    - cmake -S . -B build -DCMAKE_CUDA_ARCHITECTURES=72-real
     - cmake --build build -j
   artifacts:
     paths:
@@ -35,15 +35,15 @@ ctest on A100:
   dependencies:
     - build on A100
 
-ctest on 4090:
+ctest on AGX Xavier:
   stage: test
   tags:
-    - gpu, 4090
+    - gpu, agx_xavier
   script:
     - cd build/
     - ctest -VV
   dependencies:
-    - build on 4090
+    - build on AGX Xavier
 
 bench on A100:
   stage: bench
@@ -56,13 +56,13 @@ bench on A100:
   dependencies:
     - build on A100
 
-bench on 4090:
+bench on AGX Xavier:
   stage: bench
   tags:
-    - gpu, 4090
+    - gpu, agx_xavier
   script:
     - ./build/bin/bench_cuDilithium2
     - ./build/bin/bench_cuDilithium3
     - ./build/bin/bench_cuDilithium5
   dependencies:
-    - build on 4090
+    - build on AGX Xavier
