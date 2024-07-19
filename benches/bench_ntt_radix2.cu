@@ -1108,6 +1108,21 @@ __device__ void intt_radix2_inner_opt5(int32_t s_ntt[DILITHIUM_N + 128], const i
     __syncthreads();
 }
 
+__global__ void seo_ntt(int32_t *g_ntt) {
+    int32_t *g_per_ntt = g_ntt + gridDim.x * DILITHIUM_N;
+    size_t interval_size = DILITHIUM_N / 2;
+    for (size_t level = 0; level < 8; level++, interval_size >>= 1) {
+        for (size_t thread_id = threadIdx.x; thread_id < DILITHIUM_N / 2; thread_id += 32) {
+            size_t section_number = thread_id / interval_size;
+            size_t index_number = thread_id % interval_size;
+            size_t butt_idx = 2 * thread_id - index_number;
+            ntt_butt(g_per_ntt[butt_idx], g_per_ntt[butt_idx + interval_size],
+                     c_zetas[(1 << level) + section_number]);
+            __syncwarp();
+        }
+    }
+}
+
 __global__ void bench_ntt_radix2_opt0() {
     __shared__ int32_t s_ntt[DILITHIUM_N];
     ntt_radix2_inner_opt0(s_ntt);
@@ -1270,6 +1285,9 @@ int main() {
     print_timer_banner();
 
     for (size_t grid_dim = 10000; grid_dim >= 1; grid_dim /= 10) {
+        int32_t *d_ntt;
+        cudaMalloc(&d_ntt, sizeof(int32_t) * grid_dim * DILITHIUM_N);
+
         std::cout << "grid_dim = " << grid_dim << std::endl;
         CUDATimer timer_iopt5("intt radix2 opt 5");
         CUDATimer timer_opt5("ntt radix2 opt 5");
@@ -1278,8 +1296,13 @@ int main() {
         CUDATimer timer_opt2("ntt radix2 opt 2");
         CUDATimer timer_opt1("ntt radix2 opt 1");
         CUDATimer timer_opt0("ntt radix2 opt 0");
+        CUDATimer timer_seo("seo ntt");
 
         for (size_t i = 0; i < NTESTS; i++) {
+            timer_seo.start();
+            seo_ntt<<<grid_dim, 32>>>(d_ntt);
+            timer_seo.stop();
+
             timer_opt0.start();
             bench_ntt_radix2_opt0<<<grid_dim, 128>>>();
             timer_opt0.stop();
@@ -1308,6 +1331,8 @@ int main() {
             bench_intt_radix2_opt5<<<grid_dim, 128>>>();
             timer_iopt5.stop();
         }
+
+        cudaFree(d_ntt);
     }
 
     CUDATimer timer("test ntt radix2");

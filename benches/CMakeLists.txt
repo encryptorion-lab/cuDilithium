@@ -16,10 +16,14 @@ add_executable(bench_cuDilithium5 ${BENCH_SRCS})
 target_compile_definitions(bench_cuDilithium5 PRIVATE DILITHIUM_MODE=5)
 target_link_libraries(bench_cuDilithium5 cuDilithium5)
 
-# radix-2 NTT bench executables
+# radix-2 NTT bench executable
 add_executable(bench_ntt_radix2 bench_ntt_radix2.cu)
 target_compile_definitions(bench_ntt_radix2 PRIVATE DILITHIUM_MODE=2)
 
-# radix-8 NTT bench executables
+# radix-8 NTT bench executable
 add_executable(bench_ntt_radix8 bench_ntt_radix8.cu)
 target_compile_definitions(bench_ntt_radix8 PRIVATE DILITHIUM_MODE=2)
+
+# Reject sampling bench executable
+add_executable(bench_rej_sampling bench_rej_sampling.cu)
+target_compile_definitions(bench_rej_sampling PRIVATE DILITHIUM_MODE=2)
