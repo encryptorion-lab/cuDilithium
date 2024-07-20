@@ -34,5 +34,6 @@ bench on A100:
     - ./build/bin/bench_cuDilithium5
     - ./build/bin/bench_ntt_radix2
     - ./build/bin/bench_ntt_radix8
+    - ./build/bin/bench_rej_sampling
   dependencies:
     - build on A100
