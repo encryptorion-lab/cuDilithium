@@ -28,6 +28,7 @@
 #include <random>
 #include <utility>
 #include <vector>
+#include <numeric>
 
 #include <cub/cub.cuh>
 #include <cuda.h>
@@ -125,7 +126,7 @@ private:
             return 0;
 
         auto const count = static_cast<float>(v.size());
-        return std::reduce(v.begin(), v.end()) / count * 1000;
+        return std::accumulate(v.begin(), v.end(), 0.0f) / count * 1000;
     }
 
     static float median(std::vector<float> v) {
@@ -163,7 +164,7 @@ private:
             return 0;
 
         auto const count = static_cast<float>(v.size());
-        float mean = std::reduce(v.begin(), v.end()) / count;
+        float mean = std::accumulate(v.begin(), v.end(), 0.0f) / count;
 
         std::vector<double> diff(v.size());
 
@@ -223,7 +224,7 @@ private:
             return 0;
 
         auto const count = static_cast<float>(v.size());
-        return std::reduce(v.begin(), v.end()) / count;
+        return std::accumulate(v.begin(), v.end(), 0.0f) / count;
     }
 
     static float median(std::vector<float> v) {
@@ -265,7 +266,7 @@ private:
             return 0;
 
         auto const count = static_cast<float>(v.size());
-        float mean = std::reduce(v.begin(), v.end()) / count;
+        float mean = std::accumulate(v.begin(), v.end(), 0.0f) / count;
 
         std::vector<double> diff(v.size());
 

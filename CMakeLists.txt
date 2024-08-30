@@ -4,11 +4,6 @@ cmake_minimum_required(VERSION 3.20)
 # set the project name, languages, version, and description
 project(cuDilithium LANGUAGES C CXX CUDA VERSION 1.0.0 DESCRIPTION "Dilithium in CUDA")
 
-# set language standards
-set(CMAKE_C_STANDARD 17)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CUDA_STANDARD 17)
-
 # CUDA only: Enables separate compilation of device code
 # enable separable compilation for all CUDA files in this project
 set(CMAKE_CUDA_SEPARABLE_COMPILATION ON)
