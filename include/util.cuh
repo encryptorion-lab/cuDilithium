@@ -34,9 +34,8 @@
 #include <cuda_runtime.h>
 #include <curand.h>
 
-#include <boost/format.hpp>
-
 #define CHECK_CUDA_ERROR(val) check((val), #val, __FILE__, __LINE__)
+
 template<typename T>
 inline void check(T err, const char *const func, const char *const file,
                   const int line) {
@@ -50,6 +49,7 @@ inline void check(T err, const char *const func, const char *const file,
 }
 
 #define CHECK_LAST_CUDA_ERROR() checkLast(__FILE__, __LINE__)
+
 inline void checkLast(const char *const file, const int line) {
     cudaError_t err{cudaGetLastError()};
     if (err != cudaSuccess) {
@@ -76,8 +76,7 @@ inline int my_rand_int(int min, int max) {
 
 inline void print_timer_banner() {
     // print header
-    auto fmt = boost::format("%20s%10s%20s%20s%20s") % "function" % "trials" % "min (us)" % "median (us)" % "std. dev.";
-    std::cout << fmt << std::endl;
+    std::cout << "function,trials,min (us),median (us),std. dev." << std::endl;
 }
 
 class CUDATimer {
@@ -97,8 +96,11 @@ public:
         auto min_time = min(time_);
         auto median_time = median(time_);
         auto stddev = std_dev(time_);
-        auto fmt = boost::format("%20s%10i%20.3f%20.3f%20.6f") % func_name_ % n_trials % min_time % median_time % stddev;
-        std::cout << fmt << std::endl;
+        std::cout << func_name_ << ","
+                  << n_trials << ","
+                  << min_time << ","
+                  << median_time << ","
+                  << stddev << std::endl;
     }
 
     inline void start() const {
@@ -193,8 +195,11 @@ public:
         auto median_time = median(time_);
         auto min_time = min(time_);
         auto stddev = std_dev(time_);
-        auto fmt = boost::format("%20s%10i%20.3f%20.3f%20.3f%20.6f") % func_name_ % n_trials % min_time % mean_time % median_time % stddev;
-        std::cout << fmt << std::endl;
+        std::cout << func_name_ << ","
+                  << n_trials << ","
+                  << min_time << ","
+                  << median_time << ","
+                  << stddev << std::endl;
     }
 
     inline void start() {

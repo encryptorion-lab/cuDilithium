@@ -25,7 +25,6 @@ All the prerequisites are listed below. You can certainly use hardware and softw
 We use the following third-party libraries. Please install them before building the code.
 
 - OpenMP. Used for CPU multi-threading. Each CUDA stream is assigned to a CPU thread.
-- Boost. Used for pretty printing of results.
 
 ## Configuring and Building
 
@@ -42,9 +41,15 @@ cmake --build build -j
 ./build/bin/test_cuDilithium5
 
 ./build/bin/bench_cuDilithium2
-./build/bin/bench_cuDilithium2
 ./build/bin/bench_cuDilithium3
 ./build/bin/bench_cuDilithium5
+```
+
+## Citation
+
+If you use this code in your research, please cite the following paper:
+
+```bibtex
 ```
 
 ## License

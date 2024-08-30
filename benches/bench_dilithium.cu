@@ -280,11 +280,8 @@ int main() {
     std::vector<size_t> v_n_streams = {10};
     //    for (size_t i = 1; i <= 16; i += 1)
     //        v_n_streams.push_back(i);
-    //    auto header_fmt = boost::format("%10s%10s%20s%10s%20s%20s%20s%20s") % "threshold" % "batch" % "function" % "trials" % "min" % "mean" % "median" % "stddev.";
-    auto header_fmt =
-            boost::format("%10s%20s%10s%20s%20s%20s%20s") % "n_streams" % "function" % "trials" % "min" % "mean" %
-            "median" % "stddev.";
-    std::cout << header_fmt << std::endl;
+    //    std::cout << "threshold,batch,function,trials,min,mean,median,stddev." << std::endl;
+    std::cout << "n_streams,function,trials,min,mean,median,stddev." << std::endl;
     for (auto &batch_size: batch_sizes) {
         for (auto &exec_threshold: exec_thresholds) {
             for (auto &n_streams: v_n_streams) {

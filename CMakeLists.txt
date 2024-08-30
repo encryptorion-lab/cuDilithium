@@ -42,11 +42,6 @@ if(OPENMP_C_FOUND)
     link_libraries(${OpenMP_C_LIBRARIES})
 endif()
 
-# fetching boost and building is time consuming, so we ask users to install from package manager
-find_package(Boost REQUIRED)
-# boost headers is available through include_directories
-include_directories(${Boost_INCLUDE_DIRS})
-
 # add subdirectory of library source files
 add_subdirectory(src)
 
