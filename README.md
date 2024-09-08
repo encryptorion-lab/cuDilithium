@@ -1,4 +1,4 @@
-# cuDilithium
+# cuDilithium: High-Throughput GPU Implementation of Dilithium Post-Quantum Digital Signature
 
 ## Description
 
@@ -49,7 +49,31 @@ cmake --build build -j
 
 If you use this code in your research, please cite the following paper:
 
+Early access version: https://ieeexplore.ieee.org/document/10663956
+
 ```bibtex
+@ARTICLE{10663956,
+  author={Shen, Shiyu and Yang, Hao and Dai, Wangchen and Zhang, Hong and Liu, Zhe and Zhao, Yunlei},
+  journal={IEEE Transactions on Parallel and Distributed Systems}, 
+  title={High-Throughput GPU Implementation of Dilithium Post-Quantum Digital Signature}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-12},
+  keywords={Graphics processing units;Task analysis;Throughput;Digital signatures;Security;Streams;Parallel processing;Digital signature;GPU;parallel processing;post-quantum cryptography;Dilithium},
+  doi={10.1109/TPDS.2024.3453289}}
+```
+
+Since the paper is in process of publication with IEEE, please refer to IACR ePrint Archive version as latest version: https://eprint.iacr.org/2024/1365
+
+```bibtex
+@misc{cryptoeprint:2024/1365,
+      author = {Shiyu Shen and Hao Yang and Wangchen Dai and Hong Zhang and Zhe Liu and Yunlei Zhao},
+      title = {High-Throughput {GPU} Implementation of Dilithium Post-Quantum Digital Signature},
+      howpublished = {Cryptology {ePrint} Archive, Paper 2024/1365},
+      year = {2024},
+      url = {https://eprint.iacr.org/2024/1365}
+}
 ```
 
 ## License
